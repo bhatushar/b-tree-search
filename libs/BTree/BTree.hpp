@@ -14,8 +14,10 @@ class BTree {
     Node* root;
     void splitChild(Node* x, size_t i);
     void insertNonFull(Node* x, size_t k);
+    void deleteRecursively(Node* x);
 public:
     BTree(size_t t);
+    ~BTree();
     void insert(size_t key);
     bool search(size_t key, Node* x = nullptr) const;
     bool binarySearch(size_t key, Node* x = nullptr) const;

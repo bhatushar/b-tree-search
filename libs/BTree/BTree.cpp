@@ -7,6 +7,8 @@ BTree::Node::Node(bool leaf) : isLeaf(leaf) {}
 
 BTree::BTree(size_t t) : minDegree(t), root(new Node(true)) {}
 
+BTree::~BTree() { deleteRecursively(root); }
+
 void BTree::splitChild(Node* x, size_t i) {
     Node* y = x->children[i];
     Node* z = new Node(y->isLeaf);
@@ -40,6 +42,14 @@ void BTree::insertNonFull(Node* x, size_t k) {
         }
         insertNonFull(x->children[i], k);
     }
+}
+
+void BTree::deleteRecursively(Node* x) {
+    if (!x->isLeaf) {
+        for (auto* c: x->children)
+            deleteRecursively(c);
+    }
+    delete x;
 }
 
 void BTree::insert(size_t key) {

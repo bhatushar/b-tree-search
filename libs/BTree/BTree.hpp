@@ -6,19 +6,19 @@
 class BTree {
     struct Node {
         bool isLeaf;
-        std::vector<int> keys;
+        std::vector<size_t> keys;
         std::vector<Node*> children;
         Node(bool leaf);
     };
-    int minDegree;
+    size_t minDegree;
     Node* root;
-    void splitChild(Node* x, int i);
-    void insertNonFull(Node* x, int k);
+    void splitChild(Node* x, size_t i);
+    void insertNonFull(Node* x, size_t k);
 public:
-    BTree(int t);
-    void insert(int key);
-    bool search(int key, Node* x = nullptr);
-    bool binarySearch(int key, Node* x = nullptr);
+    BTree(size_t t);
+    void insert(size_t key);
+    bool search(size_t key, Node* x = nullptr);
+    bool binarySearch(size_t key, Node* x = nullptr);
     void print();
 };
 

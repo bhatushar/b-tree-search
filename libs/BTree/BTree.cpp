@@ -5,12 +5,12 @@
 
 BTree::Node::Node(bool leaf) : isLeaf(leaf) {}
 
-BTree::BTree(int t) : minDegree(t), root(new Node(true)) {}
+BTree::BTree(size_t t) : minDegree(t), root(new Node(true)) {}
 
-void BTree::splitChild(Node* x, int i) {
+void BTree::splitChild(Node* x, size_t i) {
     Node* y = x->children[i];
     Node* z = new Node(y->isLeaf);
-    z->keys = std::vector<int>(y->keys.begin() + minDegree, y->keys.end());
+    z->keys = std::vector<size_t>(y->keys.begin() + minDegree, y->keys.end());
     if (!y->isLeaf)
         for (int j = minDegree; j < y->children.size(); j++)
             z->children.emplace_back(y->children[j]);
@@ -21,7 +21,7 @@ void BTree::splitChild(Node* x, int i) {
         y->children.resize(minDegree);
 }
 
-void BTree::insertNonFull(Node* x, int k) {
+void BTree::insertNonFull(Node* x, size_t k) {
     int i = x->keys.size() - 1;
     if (x->isLeaf) {
         x->keys.resize(i + 2);
@@ -42,7 +42,7 @@ void BTree::insertNonFull(Node* x, int k) {
     }
 }
 
-void BTree::insert(int key) {
+void BTree::insert(size_t key) {
     if (root->keys.size() == 2*minDegree - 1) {
         Node* temp = root;
         root = new Node(false);
@@ -52,7 +52,7 @@ void BTree::insert(int key) {
     insertNonFull(root, key);
 }
 
-bool BTree::search(int key, Node* x) {
+bool BTree::search(size_t key, Node* x) {
     if (!x) x = root;
     int i = 0;
     while (i < x->keys.size() && key > x->keys[i]) i++;
@@ -61,7 +61,7 @@ bool BTree::search(int key, Node* x) {
     return search(key, x->children[i]);
 }
 
-bool BTree::binarySearch(int key, Node* x) {
+bool BTree::binarySearch(size_t key, Node* x) {
     if (!x) x = root;
     size_t left = 0, right = x->keys.size() - 1, mid;
     while (left <= right) {

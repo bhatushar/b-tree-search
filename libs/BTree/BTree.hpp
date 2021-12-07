@@ -18,6 +18,7 @@ public:
     BTree(int t);
     void insert(int key);
     bool search(int key, Node* x = nullptr);
+    bool binarySearch(int key, Node* x = nullptr);
     void print();
 };
 

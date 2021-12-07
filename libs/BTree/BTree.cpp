@@ -61,6 +61,30 @@ bool BTree::search(int key, Node* x) {
     return search(key, x->children[i]);
 }
 
+bool BTree::binarySearch(int key, Node* x) {
+    if (!x) x = root;
+    size_t left = 0, right = x->keys.size() - 1, mid;
+    while (left <= right) {
+        mid = left + (right - left) / 2;
+        if (x->keys[mid] == key) break;
+        if (x->keys[mid] < key)
+            if ((mid == x->keys.size() - 1) || (key < x->keys[mid+1]))
+                break;
+            else left = mid + 1;
+        else
+            if (mid == 0) break;
+            else right = mid - 1;
+    }
+    if (mid < x->keys.size() && x->keys[mid] == key)
+        return true;
+    if (!x->isLeaf) {
+        if (mid < x->keys.size() && x->keys[mid] < key)
+            return binarySearch(key, x->children[mid + 1]);
+        else return binarySearch(key, x->children[mid]);
+    }
+    return false;
+}
+
 void BTree::print() {
     typedef std::pair<Node*, int> pair;
     std::queue<pair> q;

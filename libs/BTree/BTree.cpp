@@ -52,7 +52,7 @@ void BTree::insert(size_t key) {
     insertNonFull(root, key);
 }
 
-bool BTree::search(size_t key, Node* x) {
+bool BTree::search(size_t key, Node* x) const {
     if (!x) x = root;
     int i = 0;
     while (i < x->keys.size() && key > x->keys[i]) i++;
@@ -61,7 +61,7 @@ bool BTree::search(size_t key, Node* x) {
     return search(key, x->children[i]);
 }
 
-bool BTree::binarySearch(size_t key, Node* x) {
+bool BTree::binarySearch(size_t key, Node* x) const {
     if (!x) x = root;
     size_t left = 0, right = x->keys.size() - 1, mid;
     while (left <= right) {
@@ -85,7 +85,7 @@ bool BTree::binarySearch(size_t key, Node* x) {
     return false;
 }
 
-void BTree::print() {
+void BTree::print() const {
     typedef std::pair<Node*, int> pair;
     std::queue<pair> q;
     q.push(std::make_pair(root, 0));

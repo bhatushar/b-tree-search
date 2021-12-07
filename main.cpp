@@ -8,10 +8,10 @@ using namespace std;
 typedef unordered_set<size_t> KeySet;
 
 void generateKeys(size_t n, KeySet& keys) {
-    random_device rd;
-    mt19937_64 eng(rd());
-    uniform_int_distribution<size_t> dist;
-    for (size_t i = 0; i < n; i++) {
+    static random_device rd;
+    static mt19937_64 eng(rd());
+    static uniform_int_distribution<size_t> dist;
+    for (size_t i = keys.size() + 1; i <= n; i++) {
         size_t key;
         do {
             key = dist(eng);
@@ -65,11 +65,11 @@ long long binarySearch(const KeySet& keys, const BTree& tree) {
 int main() {
     size_t n, t = 100;
     long long executionTime;
+    KeySet keys;
     
     cout << "Keeping t = " << t << " constant" << endl << endl;
     for (n = 10e3; n <= 10e6; n *= 10) {
         BTree tree(t);
-        KeySet keys;
 
         cout << "n = " << n << endl;
         generateKeys(n, keys);
@@ -85,13 +85,14 @@ int main() {
     }
 
     n = 10e5;
+    keys.clear();
+    generateKeys(n, keys);
+    
     cout << "Keeping n = " << n << " constant" << endl << endl;
     for (size_t t = 100; t <= 1000; t += 200) {
         BTree tree(t);
-        KeySet keys;
 
         cout << "t = " << t << endl;
-        generateKeys(n, keys);
 
         executionTime = insertKeys(keys, tree);
         cout << "Inserting unique keys took " << executionTime << " microseconds" << endl;
